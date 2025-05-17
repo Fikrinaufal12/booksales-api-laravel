@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
-class Author
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Author extends Model
 {
-    public static function all()
-    {
-        return [
-            ['id' => 1, 'name' => 'Tere Liye'],
-            ['id' => 2, 'name' => 'Dewi Lestari'],
-            ['id' => 3, 'name' => 'Andrea Hirata'],
-            ['id' => 4, 'name' => 'Habiburrahman El Shirazy'],
-            ['id' => 5, 'name' => 'Raditya Dika'],
-        ];
-    }
+    use HasFactory;
+
+    protected $fillable = ['name'];
 }
