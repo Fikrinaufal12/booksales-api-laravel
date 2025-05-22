@@ -1,8 +1,12 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\BookController;
 
-Route::get('/genres', [GenreController::class, 'api']);
-Route::get('/authors', [AuthorController::class, 'api']);
+
+Route::apiResource('genres', GenreController::class);
+Route::apiResource('authors', AuthorController::class);
+Route::apiResource('books', BookController::class);

@@ -2,16 +2,22 @@
 
 namespace App\Models;
 
-class Genre
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Genre extends Model
 {
-    public static function all()
+    use HasFactory;
+
+    protected $fillable = ['name'];
+
+    public function books()
     {
-        return [
-            ['id' => 1, 'name' => 'Fiksi'],
-            ['id' => 2, 'name' => 'Non-Fiksi'],
-            ['id' => 3, 'name' => 'Horor'],
-            ['id' => 4, 'name' => 'Romantis'],
-            ['id' => 5, 'name' => 'Petualangan'],
-        ];
+        return $this->hasMany(Book::class);
     }
+    public function genre()
+{
+    return $this->belongsTo(Genre::class);
+}
+
 }

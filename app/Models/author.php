@@ -10,4 +10,10 @@ class Author extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    // Relasi: 1 author memiliki banyak book
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
 }
