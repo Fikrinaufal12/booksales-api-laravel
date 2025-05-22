@@ -13,9 +13,23 @@ class GenreController extends Controller
         return Genre::all();
     }
 
-    // Method khusus jika kamu pakai Route::get('/genres', [GenreController::class, 'api']);
+    // Method alternatif kalau pakai /genres/api
     public function api()
     {
         return Genre::all();
+    }
+
+    // Menyimpan genre baru
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $genre = Genre::create([
+            'name' => $request->name
+        ]);
+
+        return response()->json($genre, 201);
     }
 }
