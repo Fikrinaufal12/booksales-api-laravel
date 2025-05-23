@@ -21,8 +21,38 @@ class AuthorController extends Controller
         return Author::create($validated);
     }
 
-    public function api()
+    public function show($id)
     {
-        return Author::all();
+        $author = Author::find($id);
+        if (!$author) {
+            return response()->json(['message' => 'Author not found'], 404);
+        }
+        return $author;
+    }
+
+    public function update(Request $request, $id)
+    {
+        $author = Author::find($id);
+        if (!$author) {
+            return response()->json(['message' => 'Author not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $author->update($validated);
+        return $author;
+    }
+
+    public function destroy($id)
+    {
+        $author = Author::find($id);
+        if (!$author) {
+            return response()->json(['message' => 'Author not found'], 404);
+        }
+
+        $author->delete();
+        return response()->json(['message' => 'Author deleted']);
     }
 }

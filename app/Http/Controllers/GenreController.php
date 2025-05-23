@@ -7,29 +7,52 @@ use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
-    // Mengembalikan semua genre
     public function index()
     {
         return Genre::all();
     }
 
-    // Method alternatif kalau pakai /genres/api
-    public function api()
-    {
-        return Genre::all();
-    }
-
-    // Menyimpan genre baru
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
-        $genre = Genre::create([
-            'name' => $request->name
+        return Genre::create($validated);
+    }
+
+    public function show($id)
+    {
+        $genre = Genre::find($id);
+        if (!$genre) {
+            return response()->json(['message' => 'Genre not found'], 404);
+        }
+        return $genre;
+    }
+
+    public function update(Request $request, $id)
+    {
+        $genre = Genre::find($id);
+        if (!$genre) {
+            return response()->json(['message' => 'Genre not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
         ]);
 
-        return response()->json($genre, 201);
+        $genre->update($validated);
+        return $genre;
+    }
+
+    public function destroy($id)
+    {
+        $genre = Genre::find($id);
+        if (!$genre) {
+            return response()->json(['message' => 'Genre not found'], 404);
+        }
+
+        $genre->delete();
+        return response()->json(['message' => 'Genre deleted']);
     }
 }
