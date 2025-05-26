@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book;
 use Illuminate\Http\Request;
+use App\Models\Book;
 
 class BookController extends Controller
 {
@@ -20,12 +20,13 @@ class BookController extends Controller
             'genre_id' => 'nullable|exists:genres,id',
         ]);
 
-        return Book::create($validated);
+        return response()->json(Book::create($validated), 201);
     }
 
     public function show($id)
     {
-        return Book::with(['author', 'genre'])->findOrFail($id);
+        $book = Book::with(['author', 'genre'])->findOrFail($id);
+        return response()->json($book);
     }
 
     public function update(Request $request, $id)
@@ -33,19 +34,20 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
 
         $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'author_id' => 'sometimes|required|exists:authors,id',
+            'title' => 'required|string|max:255',
+            'author_id' => 'required|exists:authors,id',
             'genre_id' => 'nullable|exists:genres,id',
         ]);
 
         $book->update($validated);
-
-        return $book;
+        return response()->json($book);
     }
 
     public function destroy($id)
     {
-        Book::destroy($id);
-        return response()->json(['message' => 'Book deleted']);
+        $book = Book::findOrFail($id);
+        $book->delete();
+
+        return response()->json(['message' => 'Book deleted successfully']);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Genre;
 use Illuminate\Http\Request;
+use App\Models\Genre;
 
 class GenreController extends Controller
 {
@@ -18,41 +18,32 @@ class GenreController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        return Genre::create($validated);
+        return response()->json(Genre::create($validated), 201);
     }
 
     public function show($id)
     {
-        $genre = Genre::find($id);
-        if (!$genre) {
-            return response()->json(['message' => 'Genre not found'], 404);
-        }
-        return $genre;
+        $genre = Genre::findOrFail($id);
+        return response()->json($genre);
     }
 
     public function update(Request $request, $id)
     {
-        $genre = Genre::find($id);
-        if (!$genre) {
-            return response()->json(['message' => 'Genre not found'], 404);
-        }
+        $genre = Genre::findOrFail($id);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
         $genre->update($validated);
-        return $genre;
+        return response()->json($genre);
     }
 
     public function destroy($id)
     {
-        $genre = Genre::find($id);
-        if (!$genre) {
-            return response()->json(['message' => 'Genre not found'], 404);
-        }
-
+        $genre = Genre::findOrFail($id);
         $genre->delete();
-        return response()->json(['message' => 'Genre deleted']);
+
+        return response()->json(['message' => 'Genre deleted successfully']);
     }
 }
