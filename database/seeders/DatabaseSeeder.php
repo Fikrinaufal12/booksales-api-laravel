@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Transaction;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 
@@ -17,6 +18,7 @@ class DatabaseSeeder extends Seeder
             AuthorSeeder::class,
             BookSeeder::class,
             AdminUserSeeder::class, 
+            TransactionSeeder::class,
         ]);
 
         // Tambahkan 1 user biasa
