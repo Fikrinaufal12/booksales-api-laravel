@@ -5,16 +5,6 @@ export const getAuthors = async () => {
   return data.data;
 };
 
-export const createAuthor = async (data) => {
-  try {
-    const response = await API.post("/authors", data);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
 export const showAuthor = async (id) => {
   try {
     const { data } = await API.get(`/authors/${id}`);
@@ -25,9 +15,27 @@ export const showAuthor = async (id) => {
   }
 };
 
+export const createAuthor = async (data) => {
+  try {
+    const response = await API.post("/authors", data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 export const updateAuthor = async (id, data) => {
   try {
-    const response = await API.post(`authors/${id}`, data);
+    const response = await API.post(`authors/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -37,7 +45,11 @@ export const updateAuthor = async (id, data) => {
 
 export const deleteAuthor = async (id) => {
   try {
-    const { message } = await API.delete(`authors/${id}`);
+    const { message } = await API.delete(`authors/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
     return message.message;
   } catch (error) {
     console.log(error);

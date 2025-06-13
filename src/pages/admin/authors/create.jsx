@@ -6,48 +6,43 @@ export default function GenreCreate() {
   const [formData, setFormData] = useState({
     name: "",
     photo: null,
-    bio: ""
+    bio: "",
   });
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const {name, value, files} = e.target;
+    const { name, value, files } = e.target;
 
-    if(name === "photo") {
+    if (name === "photo") {
       setFormData({
         ...formData,
         photo: files[0],
       });
-    }
-    else {
+    } else {
       setFormData({
         ...formData,
-        [name]: value
+        [name]: value,
       });
     }
-  }
-
-  console.log(formData)
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const payload = new FormData();
-      for(const key in formData) {
+      for (const key in formData) {
         payload.append(key, formData[key]);
       }
 
       await createAuthor(payload);
       navigate("/admin/authors");
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
       alert("error creating author");
     }
-
-  }
+  };
 
   return (
     <>

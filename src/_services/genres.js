@@ -1,51 +1,58 @@
 import API from "../_api";
 
-// GET all genres
 export const getGenres = async () => {
   const { data } = await API.get("/genres");
   return data.data;
 };
 
-// CREATE a new genre
-export const createGenre = async (data) => {
-  try {
-    const response = await API.post("/genres", data);
-    return response.data;
-  } catch (error) {
-    console.error("Error creating genre:", error);
-    throw error;
-  }
-};
-
-// GET one genre by ID
 export const showGenre = async (id) => {
   try {
     const { data } = await API.get(`/genres/${id}`);
     return data.data;
   } catch (error) {
-    console.error("Error fetching genre:", error);
-    throw error;
+    console.log(error);
+    return error;
   }
 };
 
-// UPDATE genre by ID
-export const updateGenre = async (id, data) => {
+export const createGenre = async (data) => {
   try {
-    const response = await API.put(`/genres/${id}`, data); // ⬅️ Gunakan PUT, bukan POST
+    const response = await API.post("/genres", data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error("Error updating genre:", error);
+    console.log(error);
     throw error;
   }
 };
 
-// DELETE genre by ID
+export const updateGenre = async (id, data) => {
+  try {
+    const response = await API.post(`genres/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 export const deleteGenre = async (id) => {
   try {
-    const { data } = await API.delete(`/genres/${id}`);
-    return data.message;
+    const { message } = await API.delete(`genres/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return message.message;
   } catch (error) {
-    console.error("Error deleting genre:", error);
-    throw error;
+    console.log(error);
+    return error;
   }
 };
